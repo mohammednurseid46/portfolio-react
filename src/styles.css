@@ -35,10 +35,16 @@ a{color:inherit;text-decoration:none}
 .links a{padding:8px 16px;border-radius:999px;color:var(--muted);font-size:.93rem;font-weight:500;transition:.2s}
 .links a:hover,.links a.active{color:var(--text);background:var(--border)}
 .nav-actions{display:flex;gap:8px}
+.settings{position:relative}
 .icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;display:grid;place-items:center;transition:.2s}
 .icon-btn:hover{background:var(--border);transform:rotate(12deg)}
+.settings-menu{position:absolute;top:calc(100% + 12px);right:0;width:170px;padding:8px;border-radius:16px;background:var(--bg2);border:1px solid var(--border);box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(-8px);transition:.2s}
+.settings-menu.open{opacity:1;pointer-events:auto;transform:none}
+.settings-label{display:block;padding:5px 8px 7px;color:var(--muted);font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.appearance-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 8px;border:0;border-radius:10px;background:transparent;color:var(--text);font:500 .85rem 'Inter';cursor:pointer;text-align:left}
+.appearance-toggle:hover{background:var(--border)}
+.theme-icon{display:grid;place-items:center;color:var(--accent2)}
 .menu-btn{display:none}
-.i-sun{display:none}[data-theme="light"] .i-sun{display:block}[data-theme="light"] .i-moon{display:none}
 
 /* HERO */
 .hero{min-height:100svh;display:flex;align-items:center;position:relative;padding:130px 0 70px}

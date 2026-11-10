@@ -145,6 +145,9 @@ const MailIcon = () => (
 const PhoneIcon = () => (
   <Icon><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></Icon>
 )
+const SettingsIcon = () => (
+  <Icon><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /><path d="M19.4 15a2 2 0 0 0 .4 2.2l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a2 2 0 0 0-2.2-.4 2 2 0 0 0-1.2 1.8v.1a2 2 0 1 1-4 0v-.1a2 2 0 0 0-1.2-1.8 2 2 0 0 0-2.2.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A2 2 0 0 0 3.8 15 2 2 0 0 0 2 13.8h-.1a2 2 0 1 1 0-4H2A2 2 0 0 0 3.8 8.6a2 2 0 0 0-.4-2.2l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a2 2 0 0 0 2.2.4A2 2 0 0 0 9.6 2.2v-.1a2 2 0 1 1 4 0v.1a2 2 0 0 0 1.2 1.8 2 2 0 0 0 2.2-.4l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a2 2 0 0 0-.4 2.2A2 2 0 0 0 21.2 10h.1a2 2 0 1 1 0 4h-.1a2 2 0 0 0-1.8 1z" /></Icon>
+)
 
 /* ---------------- sections ---------------- */
 
@@ -152,6 +155,24 @@ const NAV = [['about', 'About'], ['skills', 'Skills'], ['projects', 'Projects'],
 
 function Navbar({ theme, toggleTheme, active, scrolled }) {
   const [open, setOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const settingsRef = useRef(null)
+
+  useEffect(() => {
+    const closeSettings = (event) => {
+      if (!settingsRef.current?.contains(event.target)) setSettingsOpen(false)
+    }
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setSettingsOpen(false)
+    }
+    document.addEventListener('pointerdown', closeSettings)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeSettings)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [])
+
   return (
     <header className={`nav ${scrolled ? 'scrolled' : ''}`}>
       <a href="#home" className="logo" aria-label="Mohammednur Seid home">
@@ -166,13 +187,30 @@ function Navbar({ theme, toggleTheme, active, scrolled }) {
         ))}
       </nav>
       <div className="nav-actions">
-        <button className="icon-btn" onClick={toggleTheme} aria-label="Toggle theme">
-          {theme === 'dark' ? (
-            <Icon size={18}><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></Icon>
-          ) : (
-            <Icon size={18}><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></Icon>
-          )}
-        </button>
+        <div className="settings" ref={settingsRef}>
+          <button
+            className="icon-btn"
+            onClick={() => setSettingsOpen((value) => !value)}
+            aria-label="Open settings"
+            aria-expanded={settingsOpen}
+            aria-controls="settings-menu"
+          >
+            <SettingsIcon />
+          </button>
+          <div className={`settings-menu ${settingsOpen ? 'open' : ''}`} id="settings-menu">
+            <span className="settings-label">Appearance</span>
+            <button className="appearance-toggle" onClick={toggleTheme}>
+              <span>{theme === 'dark' ? 'Dark mode' : 'Light mode'}</span>
+              <span className="theme-icon">
+                {theme === 'dark' ? (
+                  <Icon size={17}><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></Icon>
+                ) : (
+                  <Icon size={17}><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></Icon>
+                )}
+              </span>
+            </button>
+          </div>
+        </div>
         <button className="icon-btn menu-btn" onClick={() => setOpen((o) => !o)} aria-label="Menu">
           <Icon><path d="M4 7h16M4 12h16M4 17h16" /></Icon>
         </button>
