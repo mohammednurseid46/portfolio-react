@@ -6,7 +6,6 @@ import {
   SiNodedotjs, SiPostgresql, SiPython, SiReact, SiSqlite, SiTailwindcss, SiTypescript,
 } from 'react-icons/si'
 import Section, { fadeUp } from './Section'
-import TiltCard from './TiltCard'
 import { skills } from '../data'
 
 const icons = {
@@ -42,6 +41,30 @@ const categoryByIcon = {
   lan: 'Networking',
   cisco: 'Networking',
 }
+const iconColors = {
+  javascript: '#f7df1e',
+  typescript: '#3178c6',
+  react: '#22b8d2',
+  next: '#111827',
+  tailwind: '#14b8a6',
+  design: '#ec4899',
+  node: '#43a047',
+  python: '#3776ab',
+  fastapi: '#10a88f',
+  flask: '#4b5563',
+  csharp: '#7c3aed',
+  sql: '#f97316',
+  postgres: '#336791',
+  postgis: '#129b8f',
+  sqlite: '#168bd0',
+  sqlserver: '#dc2626',
+  java: '#e91e4d',
+  flutter: '#2196f3',
+  networking: '#315de6',
+  tcpip: '#169bb6',
+  lan: '#129b8f',
+  cisco: '#315de6',
+}
 
 export default function Skills() {
   const [category, setCategory] = useState('All')
@@ -72,14 +95,17 @@ export default function Skills() {
         key={category}
         initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
         variants={{ show: { transition: { staggerChildren: 0.06 } } }}
-        className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+        className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
       >
         {filteredSkills.map(s => {
           const Icon = icons[s.icon]
           return (
             <motion.div key={s.title} variants={fadeUp}>
               <div className="skill-tile glass group flex min-h-20 items-center gap-3 rounded-2xl px-3.5 py-3 transition-all">
-                <span className="skill-icon grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent text-[10px] font-extrabold text-[#04070b] transition-transform duration-300 group-hover:scale-110">
+                <span
+                  className="skill-icon grid h-9 w-9 shrink-0 place-items-center rounded-lg text-[10px] font-extrabold text-white transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: iconColors[s.icon] }}
+                >
                   <Icon size={18} />
                 </span>
                 <h3 className="text-sm font-semibold leading-snug">{s.title}</h3>

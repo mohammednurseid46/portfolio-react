@@ -101,6 +101,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; letter-spa
     box-shadow: 0 8px 20px -12px rgba(var(--accent-rgb), .8);
   }
   .skill-tile {
+    min-width: 0;
     transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
   }
   .skill-tile:hover {
@@ -151,6 +152,12 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; letter-spa
   }
   .tilt:hover { border-color: rgba(var(--accent-rgb), .55); }
   .tilt:hover::before { opacity: 1; }
+}
+
+@media (max-width: 639px) {
+  .skill-tile {
+    min-height: 4.5rem;
+  }
 }
 
 @layer utilities {
