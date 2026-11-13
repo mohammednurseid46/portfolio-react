@@ -18,7 +18,7 @@ export default function Background({ mode, theme, accent }) {
     let w = 0, h = 0, raf = 0, nodes = []
     const mouse = { x: -9999, y: -9999 }
     const LINK = neural ? 150 : 130
-    const baseAlpha = light ? 0.5 : 0.8
+    const baseAlpha = light ? 1 : 0.8
 
     const init = () => {
       const count = Math.min(neural ? 90 : 110, Math.floor((w * h) / 15000))
@@ -99,9 +99,9 @@ export default function Background({ mode, theme, accent }) {
 
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-      <div className="grid-dots absolute inset-0 opacity-50" />
+      <div className={`grid-dots absolute inset-0 ${theme === 'light' ? 'opacity-80' : 'opacity-50'}`} />
       <div
-        className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
+        className={`absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full blur-3xl ${theme === 'light' ? 'opacity-35' : 'opacity-25'}`}
         style={{ background: 'radial-gradient(closest-side, rgba(var(--accent-rgb),.55), transparent)' }}
       />
       {mode !== 'minimal' && <canvas ref={ref} className="absolute inset-0" />}
