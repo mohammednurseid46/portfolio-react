@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  Web
+  Mobile
+  Desktop
+}
+
+model Project {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  desc      String
+  tags      String[]
+  category  Category
+  link      String
+  image     String?
+  features  String[]
+  featured  Boolean  @default(false)
+  position  Int
+  createdAt DateTime @default(now())
+}
+
+model Skill {
+  id       String @id @default(uuid())
+  title    String @unique
+  desc     String @default("")
+  icon     String
+  position Int
+}
+
+model Service {
+  id       String @id @default(uuid())
+  title    String @unique
+  desc     String
+  icon     String
+  position Int
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  ipHash    String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model PageView {
+  id          String   @id @default(uuid())
+  path        String
+  referrer    String?
+  visitorHash String
+  createdAt   DateTime @default(now())
+}
+
+model Admin {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}

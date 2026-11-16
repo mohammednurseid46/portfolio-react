@@ -1,0 +1,9 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testRegex": ".*\\.e2e-spec\\.ts$",
+  "transform": { "^.+\\.(t|j)s$": ["ts-jest", { "useESM": true, "tsconfig": { "module": "ESNext", "moduleResolution": "Bundler" } }] },
+  "extensionsToTreatAsEsm": [".ts"],
+  "testEnvironment": "node",
+  "moduleDirectories": ["node_modules", "../node_modules"]
+}
