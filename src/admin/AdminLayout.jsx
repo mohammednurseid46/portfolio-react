@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { BarChart3, Briefcase, ChevronRight, Code2, LayoutDashboard, LogOut, Mail, Menu, Moon, PanelLeftClose, PanelLeftOpen, Settings2, Sun, X } from 'lucide-react'
+import { Briefcase, ChevronRight, Code2, LayoutDashboard, LogOut, Mail, Menu, Moon, Network, Settings2, Sparkles, Sun, X } from 'lucide-react'
 import { logout } from './adminApi'
 import Toast from './components/Toast'
+import Background from '../components/Background'
+import { backgrounds } from '../data'
 
 const links = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
@@ -14,6 +16,10 @@ const links = [
 
 export default function AdminLayout() {
   const [theme, setTheme] = useState(() => localStorage.getItem('ms-theme') || 'dark')
+  const [bg, setBg] = useState(() => {
+    const saved = localStorage.getItem('ms-bg')
+    return backgrounds.some(item => item.id === saved) ? saved : 'constellation'
+  })
   const [open, setOpen] = useState(false)
   const [toast, setToast] = useState(null)
   const location = useLocation()
@@ -22,6 +28,7 @@ export default function AdminLayout() {
     document.documentElement.dataset.theme = theme
     document.documentElement.dataset.accent = localStorage.getItem('ms-accent') || 'cyan'
     localStorage.setItem('ms-theme', theme)
+    localStorage.setItem('ms-bg', bg)
     document.title = 'Admin | Mohammednur Seid'
     let robots = document.querySelector('meta[name="robots"]')
     if (!robots) {
@@ -31,13 +38,14 @@ export default function AdminLayout() {
     }
     robots.content = 'noindex'
     return () => { robots.content = 'index, follow' }
-  }, [theme])
+  }, [theme, bg])
 
   useEffect(() => setOpen(false), [location.pathname])
 
   const showToast = (message, type = 'success') => setToast({ message, type })
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div className="relative min-h-screen bg-bg text-fg">
+      <Background mode={bg} theme={theme} accent={localStorage.getItem('ms-accent') || 'cyan'} />
       <button className="fixed left-4 top-4 z-[70] rounded-xl border border-line bg-card p-2.5 text-fg shadow-lg backdrop-blur-xl md:hidden" aria-label="Open admin navigation" onClick={() => setOpen(true)}><Menu size={20} /></button>
       {open && <button className="fixed inset-0 z-40 bg-black/60 md:hidden" aria-label="Close admin navigation" onClick={() => setOpen(false)} />}
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-line bg-bg/95 p-5 backdrop-blur-xl transition-transform md:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
@@ -60,9 +68,18 @@ export default function AdminLayout() {
       <div className="md:pl-72">
         <header className="flex h-20 items-center justify-between border-b border-line px-5 pl-20 md:px-10 md:pl-10">
           <div><p className="text-xs uppercase tracking-[.18em] text-accent">Admin</p><p className="text-sm text-muted">Manage your portfolio</p></div>
-          <button className="rounded-xl border border-line p-2.5 text-muted hover:border-accent hover:text-accent" aria-label="Toggle theme" onClick={() => setTheme(value => value === 'dark' ? 'light' : 'dark')}>
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 rounded-xl border border-line px-2.5 py-2 text-sm text-muted" title="Choose admin background">
+              {bg === 'minimal' ? <Sparkles size={16} /> : <Network size={16} />}
+              <span className="sr-only">Background</span>
+              <select className="bg-transparent text-fg focus:outline-none" aria-label="Choose background" value={bg} onChange={event => setBg(event.target.value)}>
+                {backgrounds.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}
+              </select>
+            </label>
+            <button className="rounded-xl border border-line p-2.5 text-muted hover:border-accent hover:text-accent" aria-label="Toggle theme" onClick={() => setTheme(value => value === 'dark' ? 'light' : 'dark')}>
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
         </header>
         <main className="mx-auto max-w-7xl p-5 md:p-10"><Outlet context={{ showToast }} /></main>
       </div>

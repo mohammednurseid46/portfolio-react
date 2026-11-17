@@ -3,6 +3,8 @@ import { Eye, EyeOff, LockKeyhole } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../adminApi'
 import { isAuthenticated } from '../auth'
+import Background from '../../components/Background'
+import { backgrounds } from '../../data'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -10,6 +12,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [bg] = useState(() => {
+    const saved = localStorage.getItem('ms-bg')
+    return backgrounds.some(item => item.id === saved) ? saved : 'constellation'
+  })
 
   useEffect(() => {
     document.documentElement.dataset.theme = localStorage.getItem('ms-theme') || 'dark'
@@ -41,7 +47,8 @@ export default function Login() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-bg px-4 text-fg">
+    <main className="relative flex min-h-screen items-center justify-center bg-bg px-4 text-fg">
+      <Background mode={bg} theme={localStorage.getItem('ms-theme') || 'dark'} accent={localStorage.getItem('ms-accent') || 'cyan'} />
       <form className="glass w-full max-w-md rounded-3xl p-7 shadow-2xl md:p-9" onSubmit={submit}>
         <div className="mb-8 text-center"><div className="brand-mark mx-auto mb-4">M</div><h1 className="font-display text-2xl font-bold">Admin login</h1><p className="mt-2 text-sm text-muted">Sign in to manage your portfolio.</p></div>
         <div className="grid gap-5">

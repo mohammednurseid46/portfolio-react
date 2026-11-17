@@ -17,6 +17,8 @@ const field = 'w-full rounded-xl border border-line bg-card p-4 text-base text-f
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [copied, setCopied] = useState('')
+  const [status, setStatus] = useState({ type: '', message: '' })
+  const [submitting, setSubmitting] = useState(false)
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
 
   const copy = async (label, value) => {
@@ -29,12 +31,28 @@ export default function Contact() {
     }
   }
 
-  // No backend needed: the form opens the visitor's email app, pre-filled.
-  const submit = e => {
+  const submit = async e => {
     e.preventDefault()
-    const subject = encodeURIComponent(`Portfolio message from ${form.name}`)
-    const body = encodeURIComponent(`${form.message}\n\n— ${form.name} (${form.email})`)
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
+    setSubmitting(true)
+    setStatus({ type: '', message: '' })
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const body = await response.json().catch(() => ({}))
+      if (!response.ok) {
+        const message = Array.isArray(body.message) ? body.message.join(', ') : body.message
+        throw new Error(message || 'Unable to send your message')
+      }
+      setForm({ name: '', email: '', message: '' })
+      setStatus({ type: 'success', message: 'Thanks! Your message has been sent.' })
+    } catch (error) {
+      setStatus({ type: 'error', message: error instanceof Error ? error.message : 'Unable to send your message' })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -70,8 +88,10 @@ export default function Contact() {
           <label className="text-sm font-medium text-muted">Name<input className={`${field} mt-2`} type="text" placeholder="Your name" required value={form.name} onChange={set('name')} /></label>
           <label className="text-sm font-medium text-muted">Email<input className={`${field} mt-2`} type="email" placeholder="you@example.com" required value={form.email} onChange={set('email')} /></label>
           <label className="text-sm font-medium text-muted">Message<textarea className={`${field} mt-2 resize-y`} rows={4} placeholder="Tell me about your project…" required value={form.message} onChange={set('message')} /></label>
-          <button type="submit" className="btn btn-primary mt-1 w-full py-3.5 text-base">Send message</button>
-          <p className="text-sm text-muted">Opens your email app with the message ready to send.</p>
+          <button type="submit" disabled={submitting} className="btn btn-primary mt-1 w-full py-3.5 text-base disabled:cursor-not-allowed disabled:opacity-60">
+            {submitting ? 'Sending…' : 'Send message'}
+          </button>
+          {status.message && <p role={status.type === 'error' ? 'alert' : 'status'} className={status.type === 'error' ? 'text-sm text-red-400' : 'text-sm text-accent'}>{status.message}</p>}
         </motion.form>
       </div>
     </Section>

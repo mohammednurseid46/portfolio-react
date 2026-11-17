@@ -51,6 +51,14 @@ export default function App() {
     return () => clearTimeout(t)
   }, [toast])
 
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/analytics/view`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ path: window.location.pathname || '/', referrer: document.referrer || undefined }),
+    }).catch(error => console.error('Unable to record page view:', error))
+  }, [])
+
   const reset = () => { setTheme(DEFAULTS.theme); setAccent(DEFAULTS.accent); setBg(DEFAULTS.bg) }
 
   const actions = useMemo(() => {

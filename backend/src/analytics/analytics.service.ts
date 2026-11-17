@@ -21,11 +21,14 @@ export class AnalyticsService {
   async summary() {
     const since = new Date();
     since.setDate(since.getDate() - 29);
-    const views = await this.prisma.pageView.findMany({
-      where: { createdAt: { gte: since } },
-      select: { path: true, visitorHash: true, createdAt: true },
-      orderBy: { createdAt: 'asc' },
-    });
+    const [totalViews, views] = await Promise.all([
+      this.prisma.pageView.count(),
+      this.prisma.pageView.findMany({
+        where: { createdAt: { gte: since } },
+        select: { path: true, visitorHash: true, createdAt: true },
+        orderBy: { createdAt: 'asc' },
+      }),
+    ]);
     const perDay = new Map<string, number>();
     for (const view of views) {
       const day = view.createdAt.toISOString().slice(0, 10);
@@ -34,6 +37,7 @@ export class AnalyticsService {
     const paths = new Map<string, number>();
     for (const view of views) paths.set(view.path, (paths.get(view.path) || 0) + 1);
     return {
+      totalViews,
       viewsPerDay: [...perDay].map(([date, count]) => ({ date, count })),
       uniqueVisitors: new Set(views.map((view) => view.visitorHash)).size,
       topPaths: [...paths].sort((a, b) => b[1] - a[1]).slice(0, 10).map(([path, count]) => ({ path, count })),

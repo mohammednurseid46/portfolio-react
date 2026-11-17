@@ -174,7 +174,7 @@ npm run lint             # Run the backend linter
 - Dashboard with views, unique visitors, message counts, daily views, and top pages.
 - Message inbox with unread filtering, mark-as-read, delete confirmation, and email reply links.
 - CRUD management for projects, skills, and services.
-- Responsive sidebar, theme toggle, accessible dialogs, loading/error states, and toast notifications.
+- Responsive sidebar, theme and animated background controls, accessible dialogs, loading/error states, and toast notifications.
 - Admin pages send `noindex` metadata to search engines.
 
 ### Backend API
