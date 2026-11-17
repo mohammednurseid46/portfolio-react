@@ -39,8 +39,8 @@ export default function Login() {
     try {
       await login(form.username, form.password)
       navigate('/admin', { replace: true })
-    } catch {
-      setError('Invalid credentials')
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unable to reach the API')
     } finally {
       setLoading(false)
     }

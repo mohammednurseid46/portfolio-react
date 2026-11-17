@@ -254,6 +254,23 @@ npm run build
 7. Build and run the backend with `npm run build` and `npm run start:prod`.
 8. Build the frontend with `npm run build` and deploy the generated `dist/` directory to a static host.
 
+### Render backend
+
+The repository includes [`render.yaml`](./render.yaml) with the backend and frontend
+services. Create a Render Blueprint from the repository, then fill in the environment
+variables marked `sync: false`. `start:render` applies pending migrations and synchronizes
+the admin account before starting the API, so the login credentials on Render always match
+`ADMIN_USERNAME` and `ADMIN_PASSWORD`.
+
+### Render frontend
+
+Create a Render Static Site from the repository root with build command `npm install && npm run build`
+and publish directory `dist`. Set the build environment variable
+`VITE_API_URL=https://your-backend-service.onrender.com/api` using the actual backend URL, then
+redeploy the frontend. Also set the backend `CORS_ORIGINS` to the frontend URL. Without
+`VITE_API_URL`, the production frontend falls back to `http://localhost:3000/api`, and login
+errors can appear as invalid credentials because the deployed site cannot reach that local address.
+
 ## Editing content
 
 The original public-site fallback content is in [`src/data.js`](src/data.js). Database-backed projects, skills, and services are managed through the admin page or the authenticated API.

@@ -9,11 +9,21 @@ export async function apiFetch(path, options = {}) {
   const token = getToken()
   if (token) headers.set('Authorization', `Bearer ${token}`)
 
-  const response = await fetch(`${API_URL}${path}`, { ...options, headers })
+  let response
+  try {
+    response = await fetch(`${API_URL}${path}`, { ...options, headers })
+  } catch {
+    throw new Error('Unable to reach the API. Check VITE_API_URL and CORS_ORIGINS.')
+  }
   if (response.status === 401) {
     clearToken()
-    window.location.hash = '#/admin/login'
-    throw new Error('Your session has expired. Please log in again.')
+    if (token) {
+      window.location.hash = '#/admin/login'
+      throw new Error('Your session has expired. Please log in again.')
+    }
+    const error = new Error('Invalid credentials')
+    error.status = 401
+    throw error
   }
 
   const contentType = response.headers.get('content-type') || ''
