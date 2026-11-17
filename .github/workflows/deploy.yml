@@ -32,6 +32,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_API_URL: https://portfolio-react-1q0z.onrender.com/api
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
