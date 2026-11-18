@@ -3,23 +3,21 @@ import { motion } from 'framer-motion'
 import { Copy, Mail, Phone, Send } from 'lucide-react'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa6'
 import Section, { fadeUp } from './Section'
-import { profile } from '../data'
-
-const links = [
-  { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: Mail },
-  { label: 'Phone', value: profile.phoneLabel, href: `tel:${profile.phone}`, Icon: Phone },
-  { label: 'LinkedIn', value: 'Mohammednur Seid', href: profile.linkedin, Icon: FaLinkedinIn, external: true },
-  { label: 'GitHub', value: 'mohammednurseid46', href: profile.github, Icon: FaGithub, external: true },
-]
 
 const field = 'w-full rounded-xl border border-line bg-card p-4 text-base text-fg outline-none transition-colors placeholder:text-muted focus:border-accent'
 
-export default function Contact() {
+export default function Contact({ profile }) {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [copied, setCopied] = useState('')
   const [status, setStatus] = useState({ type: '', message: '' })
   const [submitting, setSubmitting] = useState(false)
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
+  const links = [
+    { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: Mail },
+    { label: 'Phone', value: profile.phoneLabel, href: `tel:${profile.phone}`, Icon: Phone },
+    { label: 'LinkedIn', value: profile.name, href: profile.linkedin, Icon: FaLinkedinIn, external: true },
+    { label: 'GitHub', value: 'mohammednurseid46', href: profile.github, Icon: FaGithub, external: true },
+  ]
 
   const copy = async (label, value) => {
     try {

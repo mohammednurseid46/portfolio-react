@@ -3,12 +3,12 @@ import { ArrowRight, Command } from 'lucide-react'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa6'
 import { SiReact, SiNodedotjs, SiPython } from 'react-icons/si'
 import { useTypewriter } from '../hooks'
-import { profile, roles } from '../data'
+import { roles as staticRoles } from '../data'
 import { fadeUp } from './Section'
 
 const BASE = import.meta.env.BASE_URL
 
-export default function Hero({ onOpenPalette }) {
+export default function Hero({ onOpenPalette, profile, roles = staticRoles }) {
   const role = useTypewriter(roles)
 
   return (

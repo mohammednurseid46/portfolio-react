@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Briefcase, ChevronRight, Code2, LayoutDashboard, LogOut, Mail, Menu, Moon, Network, Settings2, Sparkles, Sun, X } from 'lucide-react'
+import { Briefcase, ChevronRight, Code2, LayoutDashboard, LogOut, Mail, Menu, Moon, Network, Settings2, Sparkles, Sun, UserRound, X } from 'lucide-react'
 import { logout } from './adminApi'
 import Toast from './components/Toast'
 import Background from '../components/Background'
@@ -12,6 +12,7 @@ const links = [
   { to: '/admin/projects', label: 'Projects', icon: Briefcase },
   { to: '/admin/skills', label: 'Skills', icon: Code2 },
   { to: '/admin/services', label: 'Services', icon: Settings2 },
+  { to: '/admin/profile', label: 'Profile', icon: UserRound },
 ]
 
 export default function AdminLayout() {

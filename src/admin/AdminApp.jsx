@@ -9,6 +9,7 @@ const Messages = lazy(() => import('./pages/Messages'))
 const Projects = lazy(() => import('./pages/Projects'))
 const Skills = lazy(() => import('./pages/Skills'))
 const Services = lazy(() => import('./pages/Services'))
+const Profile = lazy(() => import('./pages/Profile'))
 
 function PageFallback() {
   return <div className="flex min-h-screen items-center justify-center bg-bg text-muted">Loading admin…</div>
@@ -25,6 +26,7 @@ export default function AdminApp() {
           <Route path="projects" element={<Projects />} />
           <Route path="skills" element={<Skills />} />
           <Route path="services" element={<Services />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Routes>

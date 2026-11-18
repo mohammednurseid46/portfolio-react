@@ -15,7 +15,7 @@ import Services from './components/Services'
 import Projects from './components/Projects'
 import Contact from './components/Contact'
 import { useStored } from './hooks'
-import { accents, backgrounds, profile, projects } from './data'
+import { accents, backgrounds, profile as staticProfile, roles as staticRoles, projects } from './data'
 
 const DEFAULTS = { theme: 'dark', accent: 'cyan', bg: 'constellation' }
 const sectionIcons = { home: Home, about: User, skills: Code, services: Layers, projects: Briefcase, contact: Mail }
@@ -26,6 +26,26 @@ export default function App() {
   const [bg, setBg] = useStored('ms-bg', DEFAULTS.bg, backgrounds.map(b => b.id))
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [toast, setToast] = useState('')
+  const [profile, setProfile] = useState({ ...staticProfile, roles: staticRoles })
+
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+    fetch(`${apiUrl}/profile`, { headers: { Accept: 'application/json' } })
+      .then(response => response.ok ? response.json() : Promise.reject())
+      .then(data => setProfile({
+        ...staticProfile,
+        name: data.name || staticProfile.name,
+        email: data.email || staticProfile.email,
+        phone: data.phone || staticProfile.phone,
+        phoneLabel: data.phoneLabel || data.phone || staticProfile.phoneLabel,
+        tagline: data.tagline || staticProfile.tagline,
+        intro: data.intro || staticProfile.intro,
+        github: data.links?.github || staticProfile.github,
+        linkedin: data.links?.linkedin || staticProfile.linkedin,
+        roles: data.roles || [],
+      }))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     const root = document.documentElement
@@ -91,7 +111,7 @@ export default function App() {
       { id: 'in', group: 'Contact', label: 'Open LinkedIn', icon: FaLinkedinIn, run: open(profile.linkedin) },
     ]
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [theme])
+  }, [theme, profile])
 
   return (
     <div className="relative min-h-screen font-sans">
@@ -105,12 +125,12 @@ export default function App() {
         onReset={reset} onOpenPalette={() => setPaletteOpen(true)}
       />
       <main>
-        <Hero onOpenPalette={() => setPaletteOpen(true)} />
+        <Hero onOpenPalette={() => setPaletteOpen(true)} profile={profile} roles={profile.roles || []} />
         <About />
         <Skills />
         <Services />
         <Projects />
-        <Contact />
+        <Contact profile={profile} />
       </main>
       <footer className="relative border-t border-line py-10 text-center text-sm text-muted">
         <p>&copy; {new Date().getFullYear()} {profile.name}. Designed &amp; built with React, Vite and Tailwind CSS.</p>

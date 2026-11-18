@@ -65,5 +65,13 @@ model Admin {
   id           String   @id @default(uuid())
   username     String   @unique
   passwordHash String
+  name         String   @default("Mohammednur Seid")
+  email        String   @default("mohammednurseid46@gmail.com")
+  phone        String   @default("+251945733006")
+  tagline      String   @default("Code, Learn, Innovate.")
+  intro        String   @default("I build elegant, high-performance digital solutions, from clean interfaces to the APIs and databases behind them.")
+  linkedin     String   @default("https://www.linkedin.com/in/mohammednur-seid-97873a3aa")
+  github       String   @default("https://github.com/mohammednurseid46")
+  roles        String[] @default([])
   createdAt    DateTime @default(now())
 }

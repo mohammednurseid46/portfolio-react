@@ -27,7 +27,10 @@ export class AuthService {
   async me(user: { sub: string }) {
     const admin = await this.prisma.admin.findUnique({
       where: { id: user.sub },
-      select: { id: true, username: true, createdAt: true },
+      select: {
+        id: true, username: true, name: true, email: true, phone: true,
+        tagline: true, intro: true, linkedin: true, github: true, roles: true, createdAt: true,
+      },
     });
     if (!admin) throw new UnauthorizedException('Invalid authentication');
     return admin;

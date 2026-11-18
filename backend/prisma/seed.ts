@@ -144,11 +144,10 @@ async function main() {
   const adminPassword = requiredEnv('ADMIN_PASSWORD');
 
   const passwordHash = await bcrypt.hash(adminPassword, 10);
-  const admin = await prisma.admin.upsert({
-    where: { username: adminUsername },
-    update: { passwordHash },
-    create: { username: adminUsername, passwordHash },
-  });
+  const existingAdmin = await prisma.admin.findFirst();
+  const admin = existingAdmin
+    ? existingAdmin
+    : await prisma.admin.create({ data: { username: adminUsername, passwordHash } });
   console.log(`✅ Admin account synchronized (username: "${admin.username}")`);
 
   // 2. Skills Seed (Upsert)
