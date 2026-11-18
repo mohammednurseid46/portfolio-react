@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from '../common/decorators/public.decorator';
 import { ProfileService } from './profile.service';
 @Controller('profile')
-@ApiTags('Profile')
+@ApiTags('About')
 export class ProfileController {
   constructor(private readonly profile: ProfileService) {}
   @Public() @Get()

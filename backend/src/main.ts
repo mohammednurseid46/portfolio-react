@@ -17,8 +17,11 @@ async function bootstrap() {
   app.enableCors({ origin: origins });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Portfolio API')
-    .setDescription('Portfolio administration and public content API.')
+    .setTitle('Mohammednur Seid Portfolio API')
+    .setDescription(
+      'Public portfolio and administration API for Mohammednur Seid.\n\n' +
+      'The **About** section provides the public profile, tagline, roles, contact email, and social links used by the portfolio.',
+    )
     .setVersion('1.0.0')
     .addBearerAuth()
     .build();
