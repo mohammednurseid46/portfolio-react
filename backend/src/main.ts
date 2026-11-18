@@ -24,7 +24,7 @@ async function bootstrap() {
     .build();
   const openApiDocument = SwaggerModule.createDocument(app, swaggerConfig);
   if (configService.get<boolean>('docs.enabled')) {
-    const docsCsp = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' https:;";
+    const docsCsp = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.scalar.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.scalar.com; connect-src 'self' https:;";
     const httpServer = app.getHttpAdapter().getInstance();
     httpServer.use('/docs', (_request: Request, response: Response, next: NextFunction) => {
       response.setHeader('Content-Security-Policy', docsCsp);

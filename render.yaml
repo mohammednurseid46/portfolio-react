@@ -20,7 +20,7 @@ services:
       - key: CORS_ORIGINS
         value: https://mohammednurseid46.github.io
       - key: DOCS_ENABLED
-        value: "false"
+        value: "true"
 
   - type: static
     name: portfolio-frontend
