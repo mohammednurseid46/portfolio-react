@@ -9,15 +9,15 @@ import type { Request } from 'express';
 export class AnalyticsController {
   constructor(private readonly analytics: AnalyticsService) {}
   @Public() @Post('view')
-  @ApiOperation({ summary: 'Record an anonymous page view' })
-  @ApiResponse({ status: 201, description: 'Page view recorded.' })
+  @ApiOperation({ summary: 'Record an anonymous page view', description: 'Accepts a JSON path and optional referrer URL. The server derives the visitor identity from the client IP without returning private visitor data.' })
+  @ApiResponse({ status: 201, description: 'JSON confirmation that the view was recorded.' })
   record(@Body() dto: ViewDto, @Req() request: Request) { return this.analytics.record(dto, request.ip || 'unknown'); }
   @Public() @Get('public')
-  @ApiOperation({ summary: 'Get public view totals' })
-  @ApiResponse({ status: 200, description: 'Total views and unique visitors.' })
+  @ApiOperation({ summary: 'Get public view totals', description: 'Requires no request body or authentication and returns aggregate public analytics as JSON.' })
+  @ApiResponse({ status: 200, description: 'JSON object containing numeric total views and unique visitor counts.' })
   publicStats() { return this.analytics.publicStats(); }
   @Get('summary') @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get the administrator analytics summary' })
-  @ApiResponse({ status: 200, description: 'Views per day, unique visitors, and top paths.' })
+  @ApiOperation({ summary: 'Get the administrator analytics summary', description: 'Accepts a bearer token and no request body. Returns detailed analytics aggregates as JSON.' })
+  @ApiResponse({ status: 200, description: 'JSON object containing views per day, unique visitors, and top paths.' })
   summary() { return this.analytics.summary(); }
 }

@@ -262,6 +262,12 @@ variables marked `sync: false`. `start:render` applies pending migrations and sy
 the admin account before starting the API, so the login credentials on Render always match
 `ADMIN_USERNAME` and `ADMIN_PASSWORD`.
 
+The deployed API documentation is available at
+[`https://portfolio-react-1q0z.onrender.com/docs`](https://portfolio-react-1q0z.onrender.com/docs),
+and the raw OpenAPI document is available at
+[`https://portfolio-react-1q0z.onrender.com/docs-json`](https://portfolio-react-1q0z.onrender.com/docs-json).
+These routes are enabled by `DOCS_ENABLED=true` in the Render service configuration.
+
 ### Render frontend
 
 Create a Render Static Site from the repository root with build command `npm install && npm run build`

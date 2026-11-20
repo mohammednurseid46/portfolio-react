@@ -7,8 +7,8 @@ import { PrismaService } from './prisma/prisma.service';
 export class AppController {
   constructor(private readonly prisma: PrismaService) {}
 
-  @ApiOperation({ summary: 'Check API health' })
-  @ApiResponse({ status: 200, description: 'API is healthy.' })
+  @ApiOperation({ summary: 'Check API health', description: 'Returns the API and database connectivity status. No request body is required.' })
+  @ApiResponse({ status: 200, description: 'Health status object with string fields: `status` and `database` (`up` or `down`).' })
   @Public() @Get()
   async health() {
     let database: 'up' | 'down' = 'up';
