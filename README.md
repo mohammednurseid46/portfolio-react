@@ -266,7 +266,7 @@ The deployed API documentation is available at
 [`https://portfolio-react-1q0z.onrender.com/docs`](https://portfolio-react-1q0z.onrender.com/docs),
 and the raw OpenAPI document is available at
 [`https://portfolio-react-1q0z.onrender.com/docs-json`](https://portfolio-react-1q0z.onrender.com/docs-json).
-These routes are enabled by `DOCS_ENABLED=true` in the Render service configuration.
+These routes are enabled in the deployed backend.
 
 ### Render frontend
 

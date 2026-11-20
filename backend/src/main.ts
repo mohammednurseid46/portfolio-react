@@ -26,20 +26,18 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const openApiDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  if (configService.get<boolean>('docs.enabled')) {
-    const docsCsp = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.scalar.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.scalar.com; connect-src 'self' https:;";
-    const httpServer = app.getHttpAdapter().getInstance();
-    httpServer.use('/docs', (_request: Request, response: Response, next: NextFunction) => {
-      response.setHeader('Content-Security-Policy', docsCsp);
-      next();
-    }, apiReference({
-      content: openApiDocument,
-      theme: 'purple',
-      darkMode: true,
-      cdn: 'https://cdn.jsdelivr.net/npm/@scalar/api-reference',
-    }));
-    httpServer.get('/docs-json', (_request: Request, response: Response) => response.json(openApiDocument));
-  }
+  const docsCsp = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.scalar.com; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.scalar.com; connect-src 'self' https:;";
+  const httpServer = app.getHttpAdapter().getInstance();
+  httpServer.use('/docs', (_request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Content-Security-Policy', docsCsp);
+    next();
+  }, apiReference({
+    content: openApiDocument,
+    theme: 'purple',
+    darkMode: true,
+    cdn: 'https://cdn.jsdelivr.net/npm/@scalar/api-reference',
+  }));
+  httpServer.get('/docs-json', (_request: Request, response: Response) => response.json(openApiDocument));
 
   const port = configService.get<number>('port') || 3000;
   await app.listen(port);
